@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "your-dockerhub-username/nodejs-app"
+        DOCKER_IMAGE = "karlapudi3/nodejs-app"
     }
 
     stages {
@@ -32,7 +32,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'karlapudi3', passwordVariable: 'Password1@1608')]) {
                     sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
                     sh 'docker push $DOCKER_IMAGE:latest'
                 }
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ec2-user@<EC2_PUBLIC_IP> '
+                    ssh -o StrictHostKeyChecking=no ec2-18-159-209-95.eu-central-1.compute.amazonaws.com '
                     docker pull $DOCKER_IMAGE:latest &&
                     docker stop nodejs-app || true &&
                     docker rm nodejs-app || true &&
